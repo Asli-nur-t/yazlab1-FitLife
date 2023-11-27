@@ -1,0 +1,152 @@
+/* Auth.css */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: rgba(249, 249, 249, 0.4);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container {
+    width: 300px; /* Form container genişliği */
+    margin-top: 20px; /* Form ile başlık arasındaki boşluk */
+}
+
+
+input, select, button {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 250px;
+    max-width: 100%; /* Maksimum genişlik ayarla */
+    box-sizing: border-box; /* Padding ve border'ı içeri al */
+}
+
+button {
+    background-color: deepskyblue;
+    color: white;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: yellowgreen;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+}
+
+/* styles.css */
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('/images/andrew-tanglao-3I2vzcmEpLU-unsplash.jpg'); /* Arka plan görseli burada belirtilir */
+    background-size: cover; /* Görselin ekran boyutuna uygun şekilde yayılmasını sağlar */
+    background-repeat: no-repeat; /* Görselin tekrar etmemesini sağlar */
+    height: 100vh; /* Sayfanın tamamını kaplar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif; /* Varsayılan fontu belirtir */
+    color: #ffffff; /* Yazı rengi beyaz */
+}
+
+/* Title ve Slogan stilleri */
+.title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-align: left;
+    font-family: 'Open Sans', sans-serif; /* Yazı tipi seçimi */
+    color: orange; /* Rengi değiştirmek için örnek bir renk */
+    margin-left: 10%; /* Sol tarafta konumlandırma */
+}
+
+.slogan {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: left;
+    font-family: 'Open Sans', sans-serif; /* Yazı tipi seçimi */
+    animation: rainbow 4s linear infinite;
+    margin-left: 10%; /* Sol tarafta konumlandırma */
+}
+
+@keyframes rainbow {
+    0% {
+        color: red;
+    }
+    5% {
+        color: orangered;
+    }
+    10% {
+        color: orange;
+    }
+    15% {
+        color: gold;
+    }
+    20% {
+        color: yellow;
+    }
+    25% {
+        color: yellowgreen;
+    }
+    30% {
+        color: lime;
+    }
+    35% {
+        color: green;
+    }
+    40% {
+        color: teal;
+    }
+    45% {
+        color: cyan;
+    }
+    50% {
+        color: dodgerblue;
+    }
+    55% {
+        color: blue;
+    }
+    60% {
+        color: slateblue;
+    }
+    65% {
+        color: blueviolet;
+    }
+    70% {
+        color: purple;
+    }
+    75% {
+        color: magenta;
+    }
+    80% {
+        color: crimson;
+    }
+    85% {
+        color: darkred;
+    }
+    90% {
+        color: firebrick;
+    }
+    95% {
+        color: brown;
+    }
+    100% {
+        color: red;
+    }
+}
+
+

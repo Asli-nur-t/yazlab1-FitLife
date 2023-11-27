@@ -1,7 +1,10 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
 
-import {getAuth} from 'firebase/auth'
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+import { getAuth } from 'firebase/auth';
+
 const firebaseConfig = {
     apiKey: "AIzaSyDFDnTu2RLy4rpr_G1knSbfN4bvadOvo0s",
     authDomain: "fitlife-c35a7.firebaseapp.com",
@@ -16,3 +19,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+
+const firestore = getFirestore(app);
+const storage = getStorage(app);
+export { firestore, storage };
