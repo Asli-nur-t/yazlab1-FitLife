@@ -1,16 +1,25 @@
-//import logo from './logo.svg';
-import './App.css';
-import {Auth} from "./components/auth";
-import { db } from "./firebase-config";
-import {useState} from "react";
-function App() {
-  const [userInfo,setUserInfo] = useState([]);
-  const getUserInfo = () => {
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-  }
-  return <div className="App">
-    <Auth />
-  </div>
+import Navbar from './components/Navbar';
+import Home from './components/HomePage';
+import { Auth } from './components/auth';
+function App() {
+
+  // Your other functions and logic go here
+
+  return (
+
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/auth" element={<Auth />} />
+            {/* Other routes go here */}
+          </Routes>
+        </div>
+
+  );
 }
 
 export default App;
