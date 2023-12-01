@@ -34,14 +34,14 @@ input, select, button {
 }
 
 button {
-    background-color: deepskyblue;
+    background-color: orangered;
     color: white;
     transition: background-color 0.3s ease;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: yellowgreen;
+    background-color: deepskyblue;
 }
 
 .error-message {

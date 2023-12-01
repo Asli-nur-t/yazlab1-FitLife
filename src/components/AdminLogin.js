@@ -24,14 +24,14 @@ const AdminLogin = () => {
                 <AdminPanel />
             ) : (
                 <div>
-                    <h2 style={{ color: 'orange', fontWeight: 'bold' }}>ADMİN GİRİŞİ</h2>
+                    <h2 style={{ color: 'darkorange', fontWeight: 'bold' }}>ADMİN GİRİŞİ</h2>
                     <form onSubmit={handleLogin}>
                         <div>
-                            <label style={{ color: 'green', fontWeight: 'bold' }}>Email:</label>
+                            <label style={{ color: 'darkorange', fontWeight: 'bold' }}>Email:</label>
                             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                         </div>
                         <div>
-                            <label style={{ color: 'green', fontWeight: 'bold' }}>Şifre:</label>
+                            <label style={{ color: 'darkorange', fontWeight: 'bold' }}>Şifre:</label>
                             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                         </div>
                         <button type="submit" style={{ color: 'white', fontWeight: 'bold' }}>Giriş Yap</button>

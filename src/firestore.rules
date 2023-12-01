@@ -1,0 +1,15 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Herkese açık olarak tüm belgelere izin ver
+    match /users/{document=**} {
+      allow read, write;
+    }
+
+    // Diğer tüm koleksiyonlara erişim izni
+    match /{document=**} {
+      allow read, write: if false; // Diğerlerine erişim kapalı
+    }
+  }
+}
