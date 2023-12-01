@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { firestore, storage, auth } from '../firebase-config';
 import {
@@ -9,7 +8,8 @@ import {
     deleteDoc,
 } from 'firebase/firestore';
 import { ref, uploadBytes } from 'firebase/storage';
-import "./AdminPanel.css";
+import './AdminPanel.css';
+
 const AdminPanel = () => {
     const [usersList, setUsersList] = useState([]);
     const [updatedDisplayName, setUpdatedDisplayName] = useState('');
@@ -20,8 +20,14 @@ const AdminPanel = () => {
         try {
             const data = await getDocs(usersCollectionRef);
             const filteredData = data.docs.map((doc) => ({
-                ...doc.data(),
                 id: doc.id,
+                email: doc.data().email,
+                displayName: doc.data().displayName || 'No Name',
+                age: doc.data().age || '',
+                gender: doc.data().gender || '',
+                height: doc.data().height || '',
+                weight: doc.data().weight || '',
+                photoURL: doc.data().photoURL || '',
             }));
             setUsersList(filteredData);
         } catch (err) {
@@ -54,7 +60,11 @@ const AdminPanel = () => {
                     <th>ID</th>
                     <th>Email</th>
                     <th>Display Name</th>
-                    {/* Add other user fields as needed */}
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>Photo</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -62,16 +72,21 @@ const AdminPanel = () => {
                 {usersList.map((user) => (
                     <tr key={user.id}>
                         <td>{user.id}</td>
-                        <td>{user.email}</td>
                         <td>{user.displayName}</td>
-                        <td>{doc.surname}</td>
-                        <td>{doc.age}</td>
-                        <td>{doc.gender}</td>
-                        <td>{doc.height}</td>
-                        <td>{doc.weight}</td>
+                        <td>{user.age}</td>
+                        <td>{user.gender}</td>
+                        <td>{user.height}</td>
+                        <td>{user.weight}</td>
                         <td>
-                            {doc.photoURL ? (
-                                <img src={doc.photoURL} alt={`Profile of ${doc.displayName}`} style={{ width: '50px', height: '50px' }} />
+                            {user.photoURL ? (
+                                <img
+                                    src={user.photoURL}
+                                    alt={`Profile of ${user.displayName}`}
+                                    style={{
+                                        width: '50px',
+                                        height: '50px',
+                                    }}
+                                />
                             ) : (
                                 'No Photo'
                             )}
@@ -80,7 +95,9 @@ const AdminPanel = () => {
                             <input
                                 placeholder="New Display Name..."
                                 onChange={(e) =>
-                                    setUpdatedDisplayName(e.target.value)
+                                    setUpdatedDisplayName(
+                                        e.target.value
+                                    )
                                 }
                             />
                             <button

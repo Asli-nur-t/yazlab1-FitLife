@@ -1,0 +1,38 @@
+
+.about-fitlife {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+}
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('/images/anastase-maragos-HyvE5SiKMUs-unsplash.jpg'); /* Arka plan görseli burada belirtilir */
+    background-size: cover; /* Görselin ekran boyutuna uygun şekilde yayılmasını sağlar */
+    background-repeat: no-repeat; /* Görselin tekrar etmemesini sağlar */
+    height: 100vh; /* Sayfanın tamamını kaplar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif; /* Varsayılan fontu belirtir */
+    color: #ffffff; /* Yazı rengi beyaz */
+}
+
+
+.content {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+    font-weight: bold;
+    color: #fff; /* İçerik metin rengi */
+
+}
