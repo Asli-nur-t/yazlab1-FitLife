@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth, firestore, storage } from "../firebase-config"
 
-import { collection ,addDoc} from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import "./Auth.css";
 
 export const Auth = () => {
@@ -22,33 +22,48 @@ export const Auth = () => {
     const signIn = async () => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const userId = auth.currentUser ? auth.currentUser.uid : null;
+
             try {
                 if (password.length < 6) {
                     setPasswordError("Şifre en az 6 karakter olmalıdır."); // Şifre uzunluğu kontrolü
-                    return; // Fonksiyonu burada sonlandırır
+                    return;
                 }
 
                 // Geri kalan kayıt işlemleri...
             } catch (err) {
                 console.error(err);
+                const errorCode = err.code;
+                const errorMessage = err.message;
+                console.log(errorMessage);
+                console.log(errorCode);
             }
             const user = userCredential.user;
 
 
+            const bmi = calculateBMI(parseFloat(weight), parseFloat(height));
 
-            // Firestore'a diğer bilgileri kaydetme
+            // Firestore'da kullanıcı bilgilerini kaydetme
             try {
-                await addDoc(userInformationsRef, {
+
+                const userDocRef = doc(userInformationsRef, userId);
+                await setDoc(userDocRef, {
                     displayName: `${displayName} ${surname}`,
                     age: age,
                     weight: weight,
                     height: height,
                     gender: gender,
-                    userId: auth?.currentUser?.uid
-
+                    email: auth?.currentUser?.email,
+                    userId: userId,
+                    BMI: bmi // VKİ
                 });
-            }catch (err) {
+
+            } catch (err) {
                 console.error(err);
+                const errorCode = err.code;
+                const errorMessage = err.message;
+                console.log(errorMessage);
+                console.log(errorCode);
             }
 
 
@@ -70,6 +85,7 @@ export const Auth = () => {
             });
 
         } catch (err) {
+            console.log("updateprofil hatası");
             console.error(err);
         }
     };
@@ -81,6 +97,12 @@ export const Auth = () => {
         const file = e.target.files[0];
         setPhotoFile(file); // Seçilen dosyayı state'e kaydet
     };
+    const calculateBMI = (weight, height) => {
+        // Kilogram cinsinden ağırlık, metre cinsinden boy olarak hesaplama yapabilirsiniz
+        const heightInMeters = height / 100; // Boyu metre cinsine çevirme
+        return (weight / (heightInMeters * heightInMeters)).toFixed(2); // VKİ hesaplama ve iki ondalık basamağa yuvarlama
+    };
+
 
     return (
         <div className="auth-container">

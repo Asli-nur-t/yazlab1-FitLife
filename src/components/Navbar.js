@@ -12,7 +12,7 @@ export default function Navbar() {
                 <CustomLink to="/home">Ana Sayfa</CustomLink>
                 <CustomLink to="/Auth">Kaydol</CustomLink>
                 <CustomLink to="/UserLogin">Giriş Yap</CustomLink>
-                <CustomLink to="/Coach">Antrenör Giriş</CustomLink>
+                <CustomLink to="/CoachLogin">Antrenör Giriş</CustomLink>
                 <CustomLink to="/AdminLogin">Admin Giriş</CustomLink>
                 <CustomLink to="/About">Hakkımızda</CustomLink>
                 {/* Sosyal medya bağlantıları için ikonlar */}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { auth } from '../firebase-config';
-import {signInWithEmailAndPassword} from "firebase/auth";
+import {signInWithEmailAndPassword ,sendPasswordResetEmail} from "firebase/auth";
 import UserPanel from "./UserPanel";
 
 const UserLogin = () => {

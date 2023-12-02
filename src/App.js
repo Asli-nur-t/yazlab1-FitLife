@@ -8,6 +8,7 @@ import { Auth } from './components/auth';
 import  AdminLogin from './components/AdminLogin';
 import About from "./components/About";
 import UserLogin from "./components/UserLogin";
+import CoachLogin from "./components/CoachLogin";
 import { firestore } from "./firebase-config";
 import {useState} from "react";
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/UserLogin" element={< UserLogin />} />
+            <Route path="/CoachLogin" element={< CoachLogin />} />
             <Route path="/adminLogin" element={<AdminLogin />} />
             <Route path="/About" element={< About />} />
 

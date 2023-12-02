@@ -7,7 +7,6 @@ import {
     doc,
     deleteDoc,
 } from 'firebase/firestore';
-import { ref, uploadBytes } from 'firebase/storage';
 import './AdminPanel.css';
 
 const AdminPanel = () => {
