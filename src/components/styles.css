@@ -24,6 +24,7 @@ body {
     align-items: stretch;
     gap: 2rem;
     padding: 0 1rem;
+    z-index: 1000; /* Navbar'ın z-index değeri */
 }
 
 .site-title {

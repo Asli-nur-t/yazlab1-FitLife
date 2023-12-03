@@ -1,0 +1,40 @@
+
+.discount-carousel {
+    position: relative;
+    z-index: 900; /* Carousel'ın z-index değeri - Navbar'ın altında olacak */
+    padding: 20px;
+    background-color: #f8f8f8;
+    max-width: 900px; /* Carousel'ın maksimum genişliği */
+    margin: 0 auto; /* Merkezde olmasını sağlar */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+}
+
+.discount-carousel h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.discount-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center; /* İçeriği merkezle */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+
+}
+.discount-card img {
+    width: 100%; /* Resimlerin genişliğini ayarlar */
+    height: auto; /* Otomatik yükseklik */
+}
+.discount-card h3 {
+    font-size: 20px;
+    color: #555;
+}
+
+.discount-card p {
+    font-size: 16px;
+    color: #777;
+}
