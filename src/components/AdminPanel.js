@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+
 import { firestore, storage, auth } from '../firebase-config';
 import {
     getDocs,
@@ -13,6 +15,8 @@ const AdminPanel = () => {
     const [usersList, setUsersList] = useState([]);
     const [updatedDisplayName, setUpdatedDisplayName] = useState('');
 
+    const [newUserEmail, setNewUserEmail] = useState('');
+    const [newUserPassword, setNewUserPassword] = useState('');
     const usersCollectionRef = collection(firestore, 'users');
 
     const getUsersList = async () => {
@@ -34,6 +38,25 @@ const AdminPanel = () => {
         }
     };
 
+    const addUser = async () => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, newUserEmail, newUserPassword);
+            await updateDoc(doc(firestore, 'users', userCredential.user.uid), {
+                email: newUserEmail,
+                displayName: '', // Burada yeni kullanıcı eklediğinizde varsayılan değerleri verebilirsiniz.
+                age: '',
+                gender: '',
+                height: '',
+                weight: '',
+                photoURL: '',
+            });
+            setNewUserEmail('');
+            setNewUserPassword('');
+            getUsersList(); // Kullanıcı listesini güncelleyin, yeni kullanıcıyı göstermek için
+        } catch (error) {
+            console.error('Kullanıcı eklenirken bir hata oluştu:', error);
+        }
+    };
     const updateUserDisplayName = async (id) => {
         const userDoc = doc(firestore, 'users', id);
         await updateDoc(userDoc, { displayName: updatedDisplayName });
@@ -114,7 +137,23 @@ const AdminPanel = () => {
                 ))}
                 </tbody>
             </table>
+            <h2>Kullanıcı Ekle</h2>
+            <input
+                type="email"
+                placeholder="E-posta"
+                value={newUserEmail}
+                onChange={(e) => setNewUserEmail(e.target.value)}
+            />
+            <input
+                type="password"
+                placeholder="Şifre"
+                value={newUserPassword}
+                onChange={(e) => setNewUserPassword(e.target.value)}
+            />
+            <button onClick={addUser}>Kullanıcı Ekle</button>
+
         </div>
+
     );
 };
 

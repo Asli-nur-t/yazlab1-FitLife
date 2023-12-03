@@ -42,7 +42,7 @@ const CoachLogin = () => {
         <CoachDashboard />
     ) : (
         <div>
-            <h1>Koç Girişi</h1>
+            <h1 style={{ color: 'darkorange', fontWeight: 'bold' }}>Koç Girişi</h1>
             <form onSubmit={handleLogin}>
                 <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />

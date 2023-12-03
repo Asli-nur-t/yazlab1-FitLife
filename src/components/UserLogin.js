@@ -35,7 +35,7 @@ const UserLogin = () => {
                 <UserPanel />
             ) : (
                 <div>
-                    <h2>Üye Girişi</h2>
+                    <h2 style={{ color: 'darkorange', fontWeight: 'bold' }}>Üye Girişi</h2>
                     <form onSubmit={handleUserLogin}>
                         <input
                             type="email"
