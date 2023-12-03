@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs, addDoc, doc, updateDoc , getDoc} from 'firebase/firestore';
 import { firestore } from '../firebase-config';
+import MessagingInterface from "./MessagingInterface";
+import AdminPanel from "./AdminPanel";
 
 const CoachDashboard = () => {
     const [coachInfo, setCoachInfo] = useState({});
@@ -99,11 +101,12 @@ const CoachDashboard = () => {
 
         fetchData();
     }, []);
-
+    const [pushMessage, setMessage] = useState(false);
     const handleMessaging = () => {
+        setMessage(true);
         // Mesajlaşma sayfasına yönlendirme işlemi
         // Örnek olarak window.location ile bir sayfaya yönlendirme:
-        // window.location.href = '/coachMessage'; // '/coachMessage' sayfa yoluna göre ayarlanmalı
+
     };
 
     return (
@@ -149,8 +152,11 @@ const CoachDashboard = () => {
                 <h2>Beslenme Programları</h2>
                 {/* Beslenme programları paneli */}
             </div>
+            {pushMessage ? (
+                <MessagingInterface />
+            ) : (
 
-            <button onClick={handleMessaging}>Mesajlaşma</button>
+            <button onClick={handleMessaging}>Mesajlaşma</button>)}
         </div>
     );
 };
