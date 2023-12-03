@@ -135,7 +135,11 @@ const CoachDashboard = () => {
                 <h1>Spor Programı Oluştur</h1>
                 <select onChange={handleUserChange}>
                     <option value="">Danışan Seçin</option>
-                    {/* Danışan listesi burada olacak */}
+                    {users.map((user) => (
+                        <option key={user.id} value={user.id}>
+                            {user.displayName} {/* Veya kullanıcı ismi */}
+                        </option>
+                    ))}
                 </select>
                 <textarea
                     placeholder="Spor programını buraya yazın..."
