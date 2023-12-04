@@ -13,6 +13,10 @@ function AboutFitLife() {
     return (
         <div className="about-fitlife">
             <div className="background-image"></div>
+            <div className="title">
+                <h1>Fitlife</h1>
+                <h2 className="slogan">Yaşamınızı Forma Sokun, Enerjinizi Yükseltin!</h2>
+            </div>
             <div className="content">
                 <h2>FitLife Hakkında</h2>
                 <p><strong> </strong> {fitLifeAbout.giris}</p>

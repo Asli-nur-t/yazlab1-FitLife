@@ -53,7 +53,7 @@ button:hover {
 body {
     margin: 0;
     padding: 0;
-    background-image: url('/images/andrew-tanglao-3I2vzcmEpLU-unsplash.jpg'); /* Arka plan görseli burada belirtilir */
+    background-image: url('/images/anastase-maragos-HyvE5SiKMUs-unsplash.jpg'); /* Arka plan görseli burada belirtilir */
     background-size: cover; /* Görselin ekran boyutuna uygun şekilde yayılmasını sağlar */
     background-repeat: no-repeat; /* Görselin tekrar etmemesini sağlar */
     height: 100vh; /* Sayfanın tamamını kaplar */

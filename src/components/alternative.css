@@ -16,7 +16,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-image: url('/images/anastase-maragos-HyvE5SiKMUs-unsplash.jpg'); /* Arka plan görseli burada belirtilir */
+    background-image: url('/images/cathy-pham-3jAN9InapQI-unsplash.jpg'); /* Arka plan görseli burada belirtilir */
     background-size: cover; /* Görselin ekran boyutuna uygun şekilde yayılmasını sağlar */
     background-repeat: no-repeat; /* Görselin tekrar etmemesini sağlar */
     height: 100vh; /* Sayfanın tamamını kaplar */
@@ -35,4 +35,89 @@ body {
     font-weight: bold;
     color: #fff; /* İçerik metin rengi */
 
+}
+
+/* Title ve Slogan stilleri */
+.title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-align: left;
+    font-family: 'Open Sans', sans-serif; /* Yazı tipi seçimi */
+    color: orange; /* Rengi değiştirmek için örnek bir renk */
+    margin-left: 10%; /* Sol tarafta konumlandırma */
+}
+
+.slogan {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: left;
+    font-family: 'Open Sans', sans-serif; /* Yazı tipi seçimi */
+    animation: rainbow 4s linear infinite;
+    margin-left: 10%; /* Sol tarafta konumlandırma */
+}
+
+@keyframes rainbow {
+    0% {
+        color: red;
+    }
+    5% {
+        color: orangered;
+    }
+    10% {
+        color: orange;
+    }
+    15% {
+        color: gold;
+    }
+    20% {
+        color: yellow;
+    }
+    25% {
+        color: yellowgreen;
+    }
+    30% {
+        color: lime;
+    }
+    35% {
+        color: green;
+    }
+    40% {
+        color: teal;
+    }
+    45% {
+        color: cyan;
+    }
+    50% {
+        color: dodgerblue;
+    }
+    55% {
+        color: blue;
+    }
+    60% {
+        color: slateblue;
+    }
+    65% {
+        color: blueviolet;
+    }
+    70% {
+        color: purple;
+    }
+    75% {
+        color: magenta;
+    }
+    80% {
+        color: crimson;
+    }
+    85% {
+        color: darkred;
+    }
+    90% {
+        color: firebrick;
+    }
+    95% {
+        color: brown;
+    }
+    100% {
+        color: red;
+    }
 }
