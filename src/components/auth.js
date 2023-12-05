@@ -4,8 +4,10 @@ import { auth, firestore, storage } from "../firebase-config"
 
 import { collection, doc, setDoc } from "firebase/firestore";
 import "./Auth.css";
+import UserPanel from "./UserPanel";
 
 export const Auth = () => {
+    const [isRegistered, setIsRegistered] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState(""); // Şifre hatası için durum değişkeni
@@ -57,7 +59,7 @@ export const Auth = () => {
                     userId: userId,
                     BMI: bmi // VKİ
                 });
-
+                setIsRegistered(true);
             } catch (err) {
                 console.error(err);
                 const errorCode = err.code;
@@ -105,6 +107,10 @@ export const Auth = () => {
 
 
     return (
+        <div>
+        {isRegistered ? (
+                <UserPanel />
+            ) : (
         <div className="auth-container">
             <div className="title">
                 <h1>Fitlife 'a kayıt ol</h1>
@@ -156,6 +162,8 @@ export const Auth = () => {
             </form>
 
         </div>
+            )}
+</div>
     );
 
 };

@@ -7,9 +7,18 @@ table {
     margin-bottom: 20px;
 }
 
+.table-container {
+    display: flex;
+    justify-content: center; /* Tabloyu yatayda ortala */
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    margin-top: 50px; /* Sayfa başından mesafe ekle */
+}
+
 th, td {
     border: 1px solid black;
-    padding: 8px;
+    padding: 12px; /* Örnek: Hücre içeriği için padding artırıldı */
     text-align: left;
 }
 
@@ -28,4 +37,8 @@ h2 {
 td {
     color: black;
     font-weight: bold;
+}
+.container {
+    min-height: 2000px; /* Örnek bir yükseklik değeri */
+    /* Diğer stillendirmeler */
 }

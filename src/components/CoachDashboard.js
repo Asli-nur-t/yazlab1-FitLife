@@ -1,49 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, addDoc, doc, updateDoc , getDoc} from 'firebase/firestore';
-import { firestore } from '../firebase-config';
+import { collection, getDocs, addDoc, doc, updateDoc, getDoc, onSnapshot, query, where } from 'firebase/firestore';
+import { auth, firestore } from '../firebase-config';
 import MessagingInterface from "./MessagingInterface";
 import AdminPanel from "./AdminPanel";
-
+import './CoachDashboard.css';
 const CoachDashboard = () => {
     const [coachInfo, setCoachInfo] = useState({});
     const [users, setUsers] = useState([]);
-    const [exercisePlan, setExercisePlan] = useState('');
     const [selectedUser, setSelectedUser] = useState('');
-    const [programs, setPrograms] = useState([]);
+    const [selectedUserProgram, setSelectedUserProgram] = useState({
+        monday: '',
+        tuesday: '',
+        wednesday: '',
+        thursday: '',
+        friday: '',
+        saturday: '',
+        sunday: '',
+    });
+    const [coachUsers, setCoachUsers] = useState([]);
 
+    useEffect(() => {
+        const unsubscribeUsers = onSnapshot(query(collection(firestore, 'users'), where('coachId', '==', auth.currentUser.uid)), snapshot => {
+            const usersData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setUsers(usersData);
 
-    const programsCollectionRef = collection(firestore, 'programs');
+            return () => {
+                unsubscribeUsers();
+            };
+        });
 
-    const getProgramsList = async () => {
-        try {
-            const data = await getDocs(programsCollectionRef);
-            const filteredData = data.docs.map((doc) => ({
-                id: doc.id,
-                program: doc.data().program || 'No Program',
-                createdAt: doc.data().createdAt || '',
-                userUID: doc.data().userUID || '',
-                // Other fields as needed...
-            }));
-            setPrograms(filteredData);
-        } catch (err) {
-            console.error(err);
-        }
-    };
+        const unsubscribeCoachUsers = onSnapshot(query(collection(firestore, 'users'), where('coachId', '==', auth.currentUser.uid)), snapshot => {
+            const coachUsersData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setCoachUsers(coachUsersData);
 
-
-
-    const updateProgram = async (id) => {
-        const programDoc = doc(firestore, 'programs', id);
-        await updateDoc(programDoc, { program: 'Updated Program Name' });
-        getProgramsList();
-    };
-
-    const handleExercisePlanChange = (e) => {
-        setExercisePlan(e.target.value);
-    };
+            return () => {
+                unsubscribeCoachUsers();
+            };
+        });
+    }, []);
 
     const handleUserChange = (e) => {
         setSelectedUser(e.target.value);
+    };
+
+    const handleProgramChange = (e, day) => {
+        setSelectedUserProgram({
+            ...selectedUserProgram,
+            [day]: e.target.value,
+        });
     };
 
     const sendExercisePlan = async () => {
@@ -55,9 +59,8 @@ const CoachDashboard = () => {
         const programsRef = collection(firestore, 'programs');
 
         const newProgram = {
-            program: exercisePlan,
-            createdAt: new Date(),
-            userUID: selectedUser
+            ...selectedUserProgram,
+            userUID: selectedUser,
         };
 
         try {
@@ -68,39 +71,6 @@ const CoachDashboard = () => {
         }
     };
 
-    useEffect(() => {
-        const getCoachInfo = async () => {
-            try {
-                const coachDocRef = doc(firestore, 'coaches', 'F9oDXRUGmRXG5quu6GCI');
-                const docSnap = await getDoc(coachDocRef);
-
-                if (docSnap.exists()) {
-                    setCoachInfo(docSnap.data());
-                } else {
-                    console.log('Koç bilgisi bulunamadı');
-                }
-            } catch (error) {
-                console.error('Koç bilgisi alma hatası:', error);
-            }
-        };
-
-        getCoachInfo();
-    }, []);
-
-    useEffect(() => {
-        getProgramsList();
-
-        const fetchData = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(firestore, 'programs'));
-                // Geri kalan Firestore işlemleri...
-            } catch (error) {
-                console.error('Firestore işlemleri sırasında hata oluştu:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
     const [pushMessage, setMessage] = useState(false);
     const handleMessaging = () => {
         setMessage(true);
@@ -123,12 +93,37 @@ const CoachDashboard = () => {
             <div>
                 <h2>Danışanlar</h2>
                 {users.map((user) => (
-                    <div key={user.age}>
+                    <div key={user.id}>
                         <img src={user.photoURL} alt="User" />
                         <p>{user.displayName}</p>
                         {/* Diğer danışan bilgileri */}
                     </div>
                 ))}
+            </div>
+
+            {/* Danışmanlar paneli */}
+            <div>
+                <h2>Danışmanlar</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Ad</th>
+                        <th>Soyad</th>
+                        <th>E-Posta</th>
+                        {/* Diğer bilgiler */}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {coachUsers.map((coachUser) => (
+                        <tr key={coachUser.id}>
+                            <td>{coachUser.name}</td>
+                            <td>{coachUser.surname}</td>
+                            <td>{coachUser.email}</td>
+                            {/* Diğer bilgiler */}
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
             </div>
 
             <div>
@@ -137,17 +132,23 @@ const CoachDashboard = () => {
                     <option value="">Danışan Seçin</option>
                     {users.map((user) => (
                         <option key={user.id} value={user.id}>
-                            {user.displayName} {/* Veya kullanıcı ismi */}
+                            {user.displayName}
                         </option>
                     ))}
                 </select>
-                <textarea
-                    placeholder="Spor programını buraya yazın..."
-                    value={exercisePlan}
-                    onChange={handleExercisePlanChange}
-                    rows={10}
-                    cols={50}
-                ></textarea>
+                <br />
+                {Object.keys(selectedUserProgram).map((day) => (
+                    <div key={day}>
+                        <label>{day.charAt(0).toUpperCase() + day.slice(1)}:</label>
+                        <textarea
+                            value={selectedUserProgram[day]}
+                            onChange={(e) => handleProgramChange(e, day)}
+                            rows={4}
+                            cols={50}
+                            placeholder={`Enter program for ${day}`}
+                        ></textarea>
+                    </div>
+                ))}
                 <br />
                 <button onClick={sendExercisePlan}>Programı Gönder</button>
             </div>
@@ -159,8 +160,8 @@ const CoachDashboard = () => {
             {pushMessage ? (
                 <MessagingInterface />
             ) : (
-
-            <button onClick={handleMessaging}>Mesajlaşma</button>)}
+                <button onClick={handleMessaging}>Mesajlaşma</button>
+            )}
         </div>
     );
 };

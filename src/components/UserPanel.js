@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { firestore ,auth } from '../firebase-config';
 import { collection, getDocs, doc  } from 'firebase/firestore';
 import CoachCarousel from "./CoachCarousel";
-
+import './UserPanel.css';
 const UserPanel = ({ userUid }) => {
     const [userData, setUserData] = useState(null);
     const [selectedPackage, setSelectedPackage] = useState('');
@@ -106,29 +106,42 @@ const UserPanel = ({ userUid }) => {
         try {
             const userDocRef = firestore.doc(`users/${userUid}`); // Kullanıcı dökümanı referansını alın
 
-            // Yeni kilo verisini Firestore'da güncelleme
-            await userDocRef.update({ weight: newWeight });
+            const userDoc = await userDocRef.get(); // Kullanıcı belgesini al
 
-            // Kullanıcı verisini güncelleyerek state'i yenileme
-            setUserData(prevUserData => {
-                const updatedUserData = prevUserData.map(user => {
-                    if (user.id === auth.currentUser.uid) {
-                        return { ...user, weight: newWeight };
-                    }
-                    return user;
+            if (userDoc.exists) {
+                const userData = userDoc.data();
+
+                // Yeni kilo verisini alırken eski VKI bilgisini de kullanabilirsiniz
+                const updatedVKI = calculateVKI(newWeight, userData.height);
+
+                // Yeni veri objesini oluşturun
+                const updatedData = {
+                    ...userData,
+                    weight: newWeight,
+                    VKI: updatedVKI,
+                };
+
+                // Kullanıcı belgesini güncelleme
+                await userDocRef.update(updatedData);
+
+                // Kullanıcı verisini güncelleyerek state'i yenileme
+                setUserData(prevUserData => {
+                    const updatedUserData = prevUserData.map(user => {
+                        if (user.id === auth.currentUser.uid) {
+                            return { ...user, weight: newWeight, VKI: updatedVKI };
+                        }
+                        return user;
+                    });
+                    return updatedUserData;
                 });
-                return updatedUserData;
-            });
-
-            // VKI'nin güncellenmesi (VKI hesaplama fonksiyonu çağrılabilir)
-            const updatedVKI = calculateVKI(newWeight, userData.height); // VKI hesaplama fonksiyonu
-
-            // Firestore'da VKI bilgisini güncelleme
-            await userDocRef.update({ VKI: updatedVKI });
+            } else {
+                console.log('Kullanıcı belgesi bulunamadı.');
+            }
         } catch (error) {
             console.error('Kilo güncellenirken hata oluştu:', error);
         }
     };
+
 
 
     // VKI hesaplama fonksiyonu
@@ -226,13 +239,13 @@ const UserPanel = ({ userUid }) => {
                                 <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Pazartesi</th>
+                                    <th>Salı</th>
                                     <th>Çarşamba</th>
+                                    <th>Perşembe</th>
                                     <th>Cuma</th>
                                     <th>Cumartesi</th>
                                     <th>Pazar</th>
-                                    <th>Pazartesi</th>
-                                    <th>Perşembe</th>
-                                    <th>Salı</th>
                                 </tr>
                                 </thead>
                                 <tbody>

@@ -1,0 +1,71 @@
+
+h2 {
+    color: #333;
+    font-size: 24px;
+}
+
+h3 {
+    color: white;
+    font-size: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.5); /* Beyaz arka plan, yüksek opaklık */
+    backdrop-filter: blur(10px); /* Saydam arka plan */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Hafif gölgeli çerçeve */
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+
+input[type="number"] {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* Resim stil */
+img {
+    border-radius: 50%;
+}
+
+/* Listeleme stilleri */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Koç kartı stilleri (CoachCarousel bileşeninden bağımsız) */
+/* ... */
+
+/* Özel stiller eklemek için bileşene göre daha fazla öğe seçici kullanabilirsiniz */
