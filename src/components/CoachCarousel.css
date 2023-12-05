@@ -27,6 +27,16 @@
 
 }
 
+.transparent-button {
+    background-color: transparent;
+    border: none;
+    color: #000; /* Buton rengi - Kendi renk şemasına göre değiştirilebilir */
+    cursor: pointer;
+    opacity: 0.5; /* Saydamlık değeri (0.0 - 1.0 arası) */
+    /* İhtiyacınıza göre diğer stillendirmeleri ekleyebilirsiniz */
+}
+
+
 .coach-card h3 {
     font-size: 20px;
     color: #555;

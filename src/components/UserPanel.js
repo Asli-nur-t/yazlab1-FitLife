@@ -1,11 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { firestore ,auth } from '../firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc  } from 'firebase/firestore';
+import CoachCarousel from "./CoachCarousel";
 
 const UserPanel = ({ userUid }) => {
     const [userData, setUserData] = useState(null);
     const [selectedPackage, setSelectedPackage] = useState('');
     const [availableCoaches, setAvailableCoaches] = useState([]);
+    const [newWeight, setNewWeight] = useState('');
+    const [userPrograms, setUserPrograms] = useState([]);
+
+    useEffect(() => {
+        const fetchUserPrograms = async () => {
+            try {
+                const programsRef = collection(firestore, 'programs');
+                const querySnapshot = await getDocs(programsRef); // Tüm programları al
+
+                const programs = [];
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+
+                    // İlgili kullanıcıya ait programları filtrele
+                    if (data.userId.id === userUid) {
+                        programs.push({
+                            id: doc.id,
+                            pazartesi: data.pazartesi || '', // Pazartesi programı
+                            sali: data.sali || '', // Salı programı
+                            carsamba: data.carsamba || '', // Çarşamba programı
+                            persembe: data.persembe || '', // Perşembe programı
+                            cuma: data.cuma || '', // Cuma programı
+                            cumartesi: data.cumartesi || '', // Cumartesi programı
+                            pazar: data.pazar || '', // Pazar programı
+                            coachId: data.coachId || '', // Koç ID'si
+                            userId: data.userId || '' // Kullanıcı ID'si
+                            // Diğer alanları buraya ekle
+                        });
+                    }
+                });
+
+                setUserPrograms(programs);
+            } catch (error) {
+                console.error('Error fetching user programs: ', error);
+            }
+        };
+
+        fetchUserPrograms();
+
+
+
+        fetchUserPrograms();
+    }, [userUid]);
+
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -57,6 +102,43 @@ const UserPanel = ({ userUid }) => {
         }
     }, [selectedPackage]);
 
+    const handleWeightUpdate = async () => {
+        try {
+            const userDocRef = firestore.doc(`users/${userUid}`); // Kullanıcı dökümanı referansını alın
+
+            // Yeni kilo verisini Firestore'da güncelleme
+            await userDocRef.update({ weight: newWeight });
+
+            // Kullanıcı verisini güncelleyerek state'i yenileme
+            setUserData(prevUserData => {
+                const updatedUserData = prevUserData.map(user => {
+                    if (user.id === auth.currentUser.uid) {
+                        return { ...user, weight: newWeight };
+                    }
+                    return user;
+                });
+                return updatedUserData;
+            });
+
+            // VKI'nin güncellenmesi (VKI hesaplama fonksiyonu çağrılabilir)
+            const updatedVKI = calculateVKI(newWeight, userData.height); // VKI hesaplama fonksiyonu
+
+            // Firestore'da VKI bilgisini güncelleme
+            await userDocRef.update({ VKI: updatedVKI });
+        } catch (error) {
+            console.error('Kilo güncellenirken hata oluştu:', error);
+        }
+    };
+
+
+    // VKI hesaplama fonksiyonu
+    const calculateVKI = (weight, height) => {
+        // VKI hesaplama mantığı burada yapılabilir
+        // Örnek bir hesaplama:
+        const heightInMeters = height / 100; // Boyu metre cinsine çevirme
+        const vki = weight / (heightInMeters * heightInMeters); // VKI hesaplama formülü
+        return vki.toFixed(2); // VKI'yi istediğiniz formatta döndürebilirsiniz
+    };
     // Paket seçimi
     const handlePackageSelection = (packageType) => {
         setSelectedPackage(packageType);
@@ -87,6 +169,14 @@ const UserPanel = ({ userUid }) => {
                     <h2>Merhaba, {user.displayName}!</h2>
                     <p>Kilo: {user.weight}</p>
                     <p>VKI: {user.VKI}</p>
+
+                            <input
+                                type="number"
+                                placeholder="Yeni kilo girin"
+                                value={newWeight}
+                                onChange={(e) => setNewWeight(e.target.value)}
+                            />
+                            <button onClick={handleWeightUpdate}>Kilo Güncelle</button>
 
                     <table key={user.id}>
                         <thead>
@@ -131,7 +221,34 @@ const UserPanel = ({ userUid }) => {
                         </tr>
                         </tbody>
                     </table>
-                    {/* ... (Diğer içerikler) */}
+                            <h3>Kullanıcı Programları</h3>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Çarşamba</th>
+                                    <th>Cuma</th>
+                                    <th>Cumartesi</th>
+                                    <th>Pazar</th>
+                                    <th>Pazartesi</th>
+                                    <th>Perşembe</th>
+                                    <th>Salı</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {userPrograms.map(program => (
+                                    <tr key={program.id}>
+                                        <td>{program.pazartesi}</td>
+                                        <td>{program.sali}</td>
+                                        <td>{program.carsamba}</td>
+                                        <td>{program.persembe}</td>
+                                        <td>{program.cuma}</td>
+                                        <td>{program.cumartesi}</td>
+                                        <td>{program.pazar}</td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
                    </div>
                 )}
                 </div>
@@ -155,6 +272,7 @@ const UserPanel = ({ userUid }) => {
                     </ul>
                 </div>
             )}
+            <CoachCarousel/>
         </div>
     );
 };
